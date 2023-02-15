@@ -61,7 +61,7 @@ function renderCalendar(plusMonth: number){
   //
   const  myDate = document.querySelector<HTMLImageElement>('#myDate');
   //
-  myDate!.src = `./src/assets/${plusMonth}.jpg` 
+  myDate!.src = `./images/${plusMonth}.jpg` 
   // Create a table element
   const table = document.createElement('table');
   // table.className = "table-auto w-64 h-64 text-center"
