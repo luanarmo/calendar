@@ -1,6 +1,6 @@
 import Toastify from 'toastify-js'
 import 'toastify-js/src/toastify.css'
-import './style.css'
+import '../src/style.css'
 
 
 // Listen to the DOMContentLoaded event
