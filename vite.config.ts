@@ -7,7 +7,7 @@ export default defineConfig({
         rollupOptions: {
           input: {
             main: resolve(__dirname, 'index.html'),
-            secreto: resolve(__dirname, 'easter.html'),
+            secreto: resolve(__dirname, './secreto/easter.html'),
           },
         },
       },
