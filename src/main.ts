@@ -11,11 +11,11 @@ let month = 0;
 //backward
 document.getElementById("backward")?.addEventListener("click", () => {
 
-  if(month > 0){
+  if(month >= 1){
     month = month - 1;
   }
 
-  if(month == 0){
+  if(month <= 0){
     Toastify({
       text: "Nomas programe para que jale con el presente año :v",
     }).showToast()
@@ -61,7 +61,7 @@ function renderCalendar(plusMonth: number){
   //
   const  myDate = document.querySelector<HTMLImageElement>('#myDate');
   //
-  myDate!.src = `../assets/${plusMonth}.jpg`
+  myDate!.src = `./src/assets/${plusMonth}.jpg` 
   // Create a table element
   const table = document.createElement('table');
   // table.className = "table-auto w-64 h-64 text-center"
@@ -144,13 +144,6 @@ function checkEvents(currentDay: number, currentMonth: number, cell: HTMLTableCe
 function easterEgg() {
   clickCounter = clickCounter + 1;
   if(clickCounter == 10){
-    // Toastify({
-    //   text: "Secretiño",
-    //   position: 'center',
-    //   style: {
-    //     background: 'linear-gradient(to right, #00b09b, #96c93d)',
-    //   },
-    // }).showToast();
     window.location.href = "easter.html";
     clickCounter = 0;
   }
