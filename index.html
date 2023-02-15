@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/calendario/images/principal-cuadrado.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendario</title>
+    <script type="module" crossorigin src="/calendario/assets/main-0182e46d.js"></script>
+    <link rel="modulepreload" crossorigin href="/calendario/assets/style-90b54b6a.js">
+    <link rel="stylesheet" href="/calendario/assets/style-3563a3af.css">
+  </head>
+  <body class="bg-zinc-900 text-white">
+    <div class="sm:flex justify-center items-center h-screen gap-x-10">
+      <!-- Image -->
+      <img id="myDate" src="ruta/a/tu/imagen.jpg" alt="Descripción de la imagen" class="md:w-1/4 h-auto w-full rounded-md ">
+      <!--  -->
+      <div class="bg-zinc-700 p-10 rounded-md w-lg md:w-1/4 ">
+        <p id="monthName" class="text-center" > </p>
+        <div class="sm:flex flex-col justify-around py-2 px-2 text-center">
+          <div class="flex justify-around ">
+            <button id="backward" class="bg-blue-400 px-2 py-1 rounded-md"> &lt;&lt; </button>
+            <button id="forward" class="bg-blue-400 px-2 py-1 rounded-md"> >> </button>
+          </div>
+        </div>
+        <!-- This Div represent the table with the calendar days -->
+        <div id="month"></div>
+      </div>
+    </div>
+
+    
+  </body>
+</html>
