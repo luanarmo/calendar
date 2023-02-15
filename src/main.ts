@@ -144,7 +144,7 @@ function checkEvents(currentDay: number, currentMonth: number, cell: HTMLTableCe
 function easterEgg() {
   clickCounter = clickCounter + 1;
   if(clickCounter == 10){
-    window.location.href = "/secreto/" + "./secreto/easter.html";
+    window.location.href = "./easter.html";
     clickCounter = 0;
   }
 }
