@@ -6,9 +6,18 @@ import './style.css'
 let clickCounter = 0;
 //
 let month = 0;
- // Array of month names
- const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-//backward
+// Array of month names
+const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+// Events of the year
+const events = new Map<string, string>([
+  ['0-5', "Mi cumpleaños"],
+  ['1-20', "✨¡Feliz aniversario nubesita 🎉!✨"],
+  ['2-18', "LA MOLE :v"],
+  ['7-7', "¡Feliz cumpleaños nubesita! 🎉"],
+  ['11-12', "✨¡Feliz aniversario de promesa! 🎉✨"],
+]);
+
+ //backward
 document.getElementById("backward")?.addEventListener("click", () => {
 
   if(month >= 1){
@@ -70,17 +79,40 @@ function renderCalendar(plusMonth: number){
   const tbody = document.createElement('tbody');
   // Create the rows with 7 columns
   let row = document.createElement('tr');
+  // Get the starting day of the week for the first day of the month (Sunday = 0, Monday = 1, etc.)
+  const startDayOfWeek = new Date(date.getFullYear(), date.getMonth() + (plusMonth - 1), 1).getDay();
+
+  // Create a header row for the days of the week
+  const headerRow = document.createElement('tr');
+  const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  for (let i = 0; i < daysOfWeek.length; i++) {
+    const headerCell = document.createElement('th');
+    headerCell.textContent = daysOfWeek[i];
+    headerRow.appendChild(headerCell);
+  }
+  // Add the header row to the table body
+  tbody.appendChild(headerRow)
+
   for (let i = 1; i <= daysInMonth; i++) {
     let cell = document.createElement('td');
     cell.innerText = i.toString();
     // cell.className = 'px-6 py-4 bg-gray-500 border hover:bg-gray-400'
     cell.className = ' bg-gray-500 border hover:bg-gray-400'
+    // Chechk if this is the first cell of week and it's not Sunday
+    if(i === 1 && startDayOfWeek !== 0){
+      //Add empty cells for the days before the first day of the month
+      for(let j = 0; j < startDayOfWeek; j++){
+        const emptyCell = document.createElement('td');
+        emptyCell.className = 'bg-gray-500 border';
+        row.appendChild(emptyCell);
+      }
+    }
     //
     cell = checkEvents(i,plusMonth,cell);
     //
     row.appendChild(cell);
-    // If the current cell is the 7th cell, create a new row
-    if (i % 7 === 0) {
+    // If this is the last cell of the week, add the row to the table body and create new row
+    if((i + startDayOfWeek) % 7 === 0 || i === daysInMonth){
       tbody.appendChild(row);
       row = document.createElement('tr');
     }
@@ -101,12 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function checkEvents(currentDay: number, currentMonth: number, cell: HTMLTableCellElement){
-  const events = new Map<string, string>([
-    ['0-5', "Mi cumpleaños"],
-    ['1-20', "✨¡Feliz aniversario nubesita 🎉!✨"],
-    ['2-18', "LA MOLE :v"],
-    ['7-7', "¡Feliz cumpleaños nubesita! 🎉"],
-  ]);
 
   const key = `${currentMonth}-${currentDay}`;
   const title = events.get(key);
@@ -144,7 +170,7 @@ function checkEvents(currentDay: number, currentMonth: number, cell: HTMLTableCe
 function easterEgg() {
   clickCounter = clickCounter + 1;
   if(clickCounter == 10){
-    window.location.href = "/secreto/" + "./easter.html";
+    window.location.href = "/calendar/secreto/" + "./easter.html";
     clickCounter = 0;
   }
 }
