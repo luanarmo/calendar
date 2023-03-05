@@ -2,12 +2,26 @@ import Toastify from 'toastify-js'
 import 'toastify-js/src/toastify.css'
 import './style.css'
 
+// Get the current date and time
+let date = new Date();
+// Get the time difference between the current time zone and UTC
+let timeDifference = date.getTimezoneOffset();
+// Convert the time difference from minutes to milliseconds
+timeDifference = timeDifference * 60 * 1000;
+// Subtract the time difference to get the date and time in Mexico City time zone
+date = new Date(date.getTime() - timeDifference);
 
-let clickCounter = 0;
 //
-let month = 0;
+let year = date.getFullYear();
+
+//
+let month = date.getMonth();
+//
+let clickCounter = 0;
 // Array of month names
 const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+// Array of days names
+const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 // Events of the year
 const events = new Map<string, string>([
   ['0-5', "Mi cumpleaños"],
@@ -19,53 +33,47 @@ const events = new Map<string, string>([
 
  //backward
 document.getElementById("backward")?.addEventListener("click", () => {
+  
+  if(month == 0){
+    month = 12;
+    year = year - 1;
+  }
 
-  if(month >= 1){
+  if(month > 0){
     month = month - 1;
   }
-
-  if(month <= 0){
-    Toastify({
-      text: "Nomas programe para que jale con el presente año :v",
-    }).showToast()
-  }
-  //
-  renderCalendar(month);
+  
+  renderCalendar(year, month);
 });
 
 //forward
 document.getElementById("forward")?.addEventListener("click", () => {
 
+  if(month == 11){
+    month = 0;
+    year = year + 1;
+  }
+
   if(month < 11){
     month = month + 1;
   }
 
-  if(month >= 11){
-    Toastify({
-      text: "Nomas programe para que jale con el presente año :v",
-    }).showToast()
-  }
-  //
-  renderCalendar(month);
+  renderCalendar(year, month);
 });
 
 
-function renderCalendar(plusMonth: number){
+function renderCalendar(currentYear: number, plusMonth: number){
   const container = document.querySelector<HTMLDivElement>('#month');
   container!.innerHTML = '';
-  // Get the current date and time
-  let date = new Date();
-  // Get the time difference between the current time zone and UTC
-  let timeDifference = date.getTimezoneOffset();
-  // Convert the time difference from minutes to milliseconds
-  timeDifference = timeDifference * 60 * 1000;
-  // Subtract the time difference to get the date and time in Mexico City time zone
-  date = new Date(date.getTime() - timeDifference);
+
   // Get the number of days in the current month
-  const daysInMonth = new Date(date.getFullYear(), date.getMonth() + plusMonth, 0).getDate();
+  const daysInMonth = new Date(currentYear, plusMonth + 1, 0).getDate();
   // Get the current month as a string
   const currentMonth = months[plusMonth];
   //
+  
+  document.getElementById('yearName')!.innerText =  year as unknown as string;
+  // Update month name
   document.getElementById('monthName')!.innerText = currentMonth;
   //
   const  myDate = document.querySelector<HTMLImageElement>('#myDate');
@@ -80,14 +88,16 @@ function renderCalendar(plusMonth: number){
   // Create the rows with 7 columns
   let row = document.createElement('tr');
   // Get the starting day of the week for the first day of the month (Sunday = 0, Monday = 1, etc.)
-  const startDayOfWeek = new Date(date.getFullYear(), date.getMonth() + (plusMonth - 1), 1).getDay();
+  // const startDayOfWeek = new Date(date.getFullYear(), date.getMonth() + (plusMonth - 1), 1).getDay();
+  const startDayOfWeek = new Date(currentYear,  plusMonth, 1).getDay();
 
   // Create a header row for the days of the week
   const headerRow = document.createElement('tr');
-  const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  // 
   for (let i = 0; i < daysOfWeek.length; i++) {
     const headerCell = document.createElement('th');
     headerCell.textContent = daysOfWeek[i];
+    headerCell.className = 'bg-blue-400 border';
     headerRow.appendChild(headerCell);
   }
   // Add the header row to the table body
@@ -128,7 +138,7 @@ function renderCalendar(plusMonth: number){
 // Listen to the DOMContentLoaded event
 document.addEventListener('DOMContentLoaded', () => {
   // 
-  renderCalendar(month);
+  renderCalendar(year, month);
 })
 
 
