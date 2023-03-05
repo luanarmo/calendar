@@ -35,11 +35,9 @@ const events = new Map<string, string>([
 document.getElementById("backward")?.addEventListener("click", () => {
   
   if(month == 0){
-    month = 12;
+    month = 11;
     year = year - 1;
-  }
-
-  if(month > 0){
+  }else {
     month = month - 1;
   }
   
@@ -48,13 +46,11 @@ document.getElementById("backward")?.addEventListener("click", () => {
 
 //forward
 document.getElementById("forward")?.addEventListener("click", () => {
-
+  
   if(month == 11){
     month = 0;
     year = year + 1;
-  }
-
-  if(month < 11){
+  }else{
     month = month + 1;
   }
 
