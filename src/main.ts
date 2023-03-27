@@ -39,15 +39,16 @@ const TOAST_TEXT_COLOR = "linear-gradient(to right, #00b09b, #96c93d)";
 interface Event {
   message: string;
   easter: boolean;
-  global: boolean;
 }
 // Events of the year
 const events = new Map<string, Event>([
-  ['0-5', { message: "Mi cumpleaños", easter: false, global: true}],
-  ['1-20', { message: "✨¡Feliz aniversario nubesita 🎉!✨", easter: true, global: true }],
-  ['2023-2-18', { message: "LA MOLE :v", easter: false, global: false }],
-  ['7-7', { message: " ¡Feliz cumpleaños nubesita! 🎉", easter: false, global: true }],
-  ['11-12', { message: "✨¡Feliz aniversario de promesa! 🎉✨", easter: false, global: true }],
+  ['2023-0-5', { message: "Mi cumpleaños", easter: false}],
+  ['2023-1-20', { message: "✨¡Feliz aniversario nubesita 🎉!✨", easter: true}],
+  ['2023-2-18', { message: "LA MOLE :v", easter: false}],
+  ['2023-7-7', { message: " ¡Feliz cumpleaños nubesita! 🎉", easter: false}],
+  ['2023-11-12', { message: "✨¡Feliz aniversario de promesa! 🎉✨", easter: false}],
+  ['2024-0-5', { message: "Mi cumpleaños 27 😁", easter: false}],
+  ['2024-1-20', { message: "✨¡Feliz aniversario 2024 🏕️ 🎉!✨", easter: true}],
 ]);
 
 // Add a listener for the "backward" button
@@ -210,10 +211,6 @@ function searchEvents() {
   events.forEach((value: Event, key: string) => {
     dayCell = document.getElementById(key) as HTMLTableCellElement;
     
-    if(value.global){
-      dayCell = document.getElementById(`${year}-${key}`) as HTMLTableCellElement;
-    }
-
     if (dayCell) {
       dayCell.className = GREEN_CLASS;
       addCellListener(dayCell, value);
@@ -247,7 +244,7 @@ function easterEgg() {
   }
 }
 
-let updateCalendar = (year: number, month: number) => {
+const updateCalendar = (year: number, month: number) => {
   renderCalendar(year, month);
   searchEvents();
   checkCurrentDay();
