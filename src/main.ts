@@ -39,16 +39,22 @@ const TOAST_TEXT_COLOR = "linear-gradient(to right, #00b09b, #96c93d)";
 interface Event {
   message: string;
   easter: boolean;
+  fun?: () => void;
 }
 // Events of the year
 const events = new Map<string, Event>([
-  ['2023-0-5', { message: "Mi cumpleaños", easter: false}],
-  ['2023-1-20', { message: "✨¡Feliz aniversario nubesita 🎉!✨", easter: true}],
-  ['2023-2-18', { message: "LA MOLE :v", easter: false}],
-  ['2023-7-7', { message: " ¡Feliz cumpleaños nubesita! 🎉", easter: false}],
-  ['2023-11-12', { message: "✨¡Feliz aniversario de promesa! 🎉✨", easter: false}],
-  ['2024-0-5', { message: "Mi cumpleaños 27 😁", easter: false}],
-  ['2024-1-20', { message: "✨¡Feliz aniversario 2024 🏕️ 🎉!✨", easter: true}],
+  ['2023-0-5', { message: "Mi cumpleaños", easter: false }],
+  ['2023-1-20', { message: "✨¡Feliz aniversario nubesita 🎉!✨", easter: false }],
+  ['2023-2-18', { message: "LA MOLE :v", easter: false }],
+  ['2023-7-7', { message: " ¡Feliz cumpleaños nubesita! 🎉", easter: false }],
+  ['2023-11-12', { message: "✨¡Feliz aniversario de promesa! 🎉✨", easter: false }],
+  ['2024-0-5', { message: "Mi cumpleaños 27 😁", easter: false }],
+  ['2024-1-20', { message: "✨¡Feliz aniversario 2024 🏕️ 🎉!✨", easter: true, fun: easterEgg }],
+  ['2025-0-5', { message: "Mi cumpleaños 😁", easter: false }],
+  ['2025-1-20', { message: "✨¡Feliz aniversario 2025 🏕️ 🎉!✨", easter: true, fun: collage }],
+  ['2025-7-7', { message: " ¡Feliz cumpleaños nubesita! 🎉", easter: false }],
+  ['2025-3-5', { message: "Axe ceremonia 🎤🎉", easter: false }],
+  ['2025-3-6', { message: "Axe ceremonia 🎤🎉", easter: false }],
 ]);
 
 // Add a listener for the "backward" button
@@ -196,7 +202,7 @@ function addCellListener(cell: HTMLTableCellElement, event: Event) {
     }).showToast();
     // If the event has an Easter egg, call the easterEgg function
     if (event.easter) {
-      easterEgg();
+      event.fun?.();
     }
   });
 }
@@ -210,7 +216,7 @@ function searchEvents() {
   let dayCell: HTMLTableCellElement | null;
   events.forEach((value: Event, key: string) => {
     dayCell = document.getElementById(key) as HTMLTableCellElement;
-    
+
     if (dayCell) {
       dayCell.className = GREEN_CLASS;
       addCellListener(dayCell, value);
@@ -242,6 +248,10 @@ function easterEgg() {
     window.location.href = "/calendar/secreto/" + "./easter.html";
     clickCounter = 0;
   }
+}
+
+function collage() {
+  window.location.href = "/calendar/secreto/" + "./invitacion.html";
 }
 
 const updateCalendar = (year: number, month: number) => {
