@@ -2,6 +2,48 @@ import Toastify from 'toastify-js'  // Import the Toastify library for showing n
 import 'toastify-js/src/toastify.css'  // Import the Toastify library's CSS file
 import './style.css'  // Import the CSS file for this calendar
 
+// ============================================
+// THEME MANAGEMENT
+// ============================================
+type Theme = 'light' | 'dark' | 'system';
+
+function getSystemTheme(): 'light' | 'dark' {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function getEffectiveTheme(): 'light' | 'dark' {
+  const stored = localStorage.getItem('theme') as Theme | null;
+  if (stored === 'light' || stored === 'dark') return stored;
+  return getSystemTheme();
+}
+
+function setTheme(theme: Theme): void {
+  localStorage.setItem('theme', theme);
+  const effective = theme === 'system' ? getSystemTheme() : theme;
+  document.documentElement.classList.toggle('dark', effective === 'dark');
+}
+
+// Initialize theme on load
+setTheme(getEffectiveTheme() === 'dark' ? 'dark' : 'light');
+
+// Listen for system theme changes when using 'system' preference
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  const stored = localStorage.getItem('theme');
+  if (!stored || stored === 'system') {
+    setTheme('system');
+  }
+});
+
+// Theme toggle button handler
+document.getElementById('theme-toggle')?.addEventListener('click', () => {
+  const current = getEffectiveTheme();
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ============================================
+// CALENDAR LOGIC
+// ============================================
+
 // Get the current date and time
 let date = new Date();
 // Get the time difference between the current time zone and UTC
@@ -24,8 +66,8 @@ const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", 
 
 // Array of day names
 const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-// colors to event cell
-const GREEN_CLASS = "bg-green-500 border hover:bg-green-400";
+// colors to event cell (with dark mode support)
+const GREEN_CLASS = "bg-green-500 dark:bg-green-600 border border-zinc-300 dark:border-zinc-600 hover:bg-green-400 dark:hover:bg-green-500";
 // color to easteregg event
 const TOAST_TEXT_COLOR = "linear-gradient(to right, #00b09b, #96c93d)";
 
@@ -119,7 +161,7 @@ function renderCalendar(currentYear: number, currentMonth: number) {
   for (let i = 0; i < daysOfWeek.length; i++) {
     const headerCell = document.createElement('th');
     headerCell.textContent = daysOfWeek[i];
-    headerCell.className = 'bg-blue-400 border';
+    headerCell.className = 'bg-blue-400 text-white border border-zinc-300 dark:border-zinc-600';
     headerRow.appendChild(headerCell);
   }
 
@@ -132,14 +174,14 @@ function renderCalendar(currentYear: number, currentMonth: number) {
     const id = `${currentYear}-${currentMonth}-${i}`;
     // text of the td
     cell.innerText = i.toString();
-    // Set the class of the cell to make it responsive and add a hover effect
-    cell.className = ' bg-gray-500 border hover:bg-gray-400';
+    // Set the class of the cell to make it responsive and add a hover effect (with dark mode)
+    cell.className = 'bg-zinc-200 dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-600 hover:bg-zinc-300 dark:hover:bg-zinc-500';
     cell.id = id;
     if (i === 1 && startDayOfWeek !== 0) {
       //Add empty cells for the days before the first day of the month
       for (let j = 0; j < startDayOfWeek; j++) {
         const emptyCell = document.createElement('td');
-        emptyCell.className = 'bg-gray-500 border';
+        emptyCell.className = 'bg-zinc-200 dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-600';
         row.appendChild(emptyCell);
       }
     }
@@ -230,7 +272,7 @@ function searchEvents() {
 function checkCurrentDay() {
   let cell = document.getElementById(`${presentYear}-${presentMonth}-${presentDay}`);
   if (cell) {
-    cell.className = ' bg-gray-500 border border-blue-400 border-2 hover:bg-blue-300';
+    cell.className = 'bg-zinc-200 dark:bg-zinc-600 border-2 border-blue-500 hover:bg-blue-200 dark:hover:bg-blue-400';
     console.log(presentYear)
   }
 }

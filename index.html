@@ -5,19 +5,46 @@
     <link rel="icon" type="image/svg+xml" href="vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calendario</title>
+    <!-- Theme script to prevent flash of wrong theme -->
+    <script>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = stored === 'light' ? 'light' : (stored === 'dark' ? 'dark' : (prefersDark ? 'dark' : 'light'));
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-zinc-900 text-white">
+  <body class="bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-white transition-colors duration-200">
+    <!-- Theme Toggle Button -->
+    <button 
+      id="theme-toggle" 
+      class="fixed top-4 right-4 p-2 rounded-lg bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors"
+      aria-label="Cambiar tema"
+    >
+      <!-- Sun icon (shown in dark mode) -->
+      <svg id="sun-icon" class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+      <!-- Moon icon (shown in light mode) -->
+      <svg id="moon-icon" class="w-6 h-6 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      </svg>
+    </button>
+
     <div class="sm:flex justify-center items-center h-screen gap-x-10">
       <!-- Image -->
       <img id="myDate" src="" alt="Descripción de la imagen" class="md:w-1/4 h-auto w-full rounded-md ">
       <!--  -->
-      <div class="bg-zinc-700 p-10 rounded-md w-lg md:w-1/4 ">
-        <p id="yearName" class="text-center text-2xl bg-blue-400"> </p>
-        <p id="monthName" class="text-center" > </p>
+      <div class="bg-white dark:bg-zinc-700 p-10 rounded-md w-lg md:w-1/4 shadow-lg">
+        <p id="yearName" class="text-center text-2xl bg-blue-400 text-white"> </p>
+        <p id="monthName" class="text-center text-zinc-700 dark:text-zinc-200" > </p>
         <div class="sm:flex flex-col justify-around py-2 px-2 text-center">
           <div class="flex justify-around ">
-            <button id="backward" class="bg-blue-400 px-2 py-1 rounded-md"> &lt;&lt; </button>
-            <button id="forward" class="bg-blue-400 px-2 py-1 rounded-md"> >> </button>
+            <button id="backward" class="bg-blue-400 hover:bg-blue-500 text-white px-2 py-1 rounded-md transition-colors"> &lt;&lt; </button>
+            <button id="forward" class="bg-blue-400 hover:bg-blue-500 text-white px-2 py-1 rounded-md transition-colors"> >> </button>
           </div>
         </div>
         <!-- This Div represent the table with the calendar days -->
